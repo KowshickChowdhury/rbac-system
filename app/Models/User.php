@@ -64,4 +64,19 @@ class User extends Authenticatable
     {
         return self::query()->where('email',$input['email'])->first();
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function haspermission($permission)
+    {
+        return $this->permissions->contains('name', $permission) || $this->role->permissions->contains('name', $permission);
+    }
 }

@@ -49,6 +49,7 @@ function Login() {
                 localStorage.email = res.data.data.email;
                 localStorage.name = res.data.data.name;
                 localStorage.token = res.data.data.token;
+                localStorage.role = res.data.data.role[0];
                 // window.location.reload();
                 navigate('/')
             } else if (res.errors) {

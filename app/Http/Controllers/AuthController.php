@@ -45,9 +45,12 @@ class AuthController extends Controller
     {
         $user = (new User())->getUserByEmail($request->all());
         if ($user && Hash::check($request->input('password'), $user->password)) {
+            $user->load('roles');
+            $roleName = $user->roles->pluck('name');
             $user_data['token'] = $user->createToken($user->email)->plainTextToken;
             $user_data['name'] = $user->name;
             $user_data['email'] = $user->email;
+            $user_data['role'] = $roleName;
             return $this->sendResponse(['message' => 'User has authenticated', 'success' => true, 'data' => $user_data]);
         }
         throw ValidationException::withMessages([
