@@ -3,18 +3,18 @@ import ProfileApis from '../apis/ProfileApis';
 
 function Dashboard() {
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
   
 
-  const fetchData = async () => {
-    const res = await ProfileApis.index();
-    console.log('res', res);
-    if (res.success) {
+  // const fetchData = async () => {
+  //   const res = await ProfileApis.index();
+  //   console.log('res', res);
+  //   if (res.success) {
 
-    }
-  };
+  //   }
+  // };
 
   return (
     <div>

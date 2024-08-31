@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,14 +34,16 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     // Admin routes
     Route::group(['middleware' => 'role:Admin'], function() {
         Route::get('/users', [UserController::class, 'allUsers']);
-        Route::post('/create-user', [AdminController::class, 'createUser']);
-        Route::put('/update-user/{id}', [AdminController::class, 'updateUser']);
-        Route::delete('/delete-user/{id}', [AdminController::class, 'deleteUser']);
+        Route::get('/roles', [RoleController::class, 'index']);
+        Route::post('/create-user', [AdminController::class, 'store']);
+        Route::put('/update-user/{id}', [AdminController::class, 'update']);
+        Route::delete('/delete-user/{id}', [AdminController::class, 'destroy']);
         Route::post('/assign-role/{userId}', [AdminController::class, 'assignRole']);
     });
 
     // Manager routes
     Route::group(['middleware' => 'role:Manager'], function() {
+        Route::get('/users', [UserController::class, 'allUsers']);
         Route::put('/update-user/{id}', [ManagerController::class, 'updateUser']);
         Route::get('/view-users', [ManagerController::class, 'viewUsers']);
     });

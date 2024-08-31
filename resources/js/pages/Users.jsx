@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import UserApis from '../apis/UserApis';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -20,8 +21,13 @@ function Users() {
 
   return (
     <div>
-        <div className="mb-4 sm:mb-0">
+        <div className="flex justify-between items-center mb-4 sm:mb-0">
             <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Users</h1>
+            <NavLink to="/add-user">
+            <button className="bg-gray-900 text-gray-100 hover:bg-blue-500 p-2 rounded">
+              <span className="">Add User</span>
+            </button>
+            </NavLink>
         </div>
         <div className=" bg-white dark:bg-gray-800 shadow-sm rounded-xl">
           <div className="p-3">

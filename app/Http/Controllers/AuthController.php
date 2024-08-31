@@ -13,6 +13,7 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     use CommonTrait;
+    
     public function __construct(User $user)
     {
         $this->user = $user;
