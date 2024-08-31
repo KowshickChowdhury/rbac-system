@@ -5,6 +5,7 @@ import UserApis from '../../apis/UserApis';
 
 function UserForm() {
   const navigate = useNavigate();
+  const role = localStorage.getItem('role');
   const[loading, setLoading] = useState(false);
   const[roles, setRoles] = useState([]);
   const[input, setInput] = useState({
@@ -51,11 +52,14 @@ const handleSubmit = async (e) => {
   let isValid = true;
   const updatedValidation = {};
   Object.keys(input).forEach(key => {
-      if (!input[key]) {
-          updatedValidation[key] = true;
-          isValid = false;
+      if (key === 'role_id' && role !== 'Admin') {
+        // Skip role_id validation for non-admins
+        updatedValidation[key] = false;
+      } else if (!input[key]) {
+        updatedValidation[key] = true;
+        isValid = false;
       } else {
-          updatedValidation[key] = false;
+        updatedValidation[key] = false;
       }
   });
   setValidation(updatedValidation);
@@ -141,7 +145,7 @@ const handleSubmit = async (e) => {
                   {validation.password && <p className="text-red-500 text-sm">Password is required</p>}
                 </div>
               </div>
-
+              {role === 'Admin' && (
               <div className="sm:col-span-3">
                 <label htmlFor="country" className="block text-sm font-semibold leading-6 text-gray-900">
                   Role
@@ -163,6 +167,7 @@ const handleSubmit = async (e) => {
                   {validation.role_id && <p className="text-red-500 text-sm">Role is required</p>}
                 </div>
               </div>
+              )}
             </div>
           </div>
         </div>

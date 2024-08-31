@@ -19,7 +19,7 @@ class CheckRole
     public function handle(Request $request, Closure $next, $role)
     {
         $user = Auth::user();
-
+        dd($role);
         // Check if the authenticated user has the required role
         if ($user && $user->roles()->where('name', $role)->exists()) {
             return $next($request);

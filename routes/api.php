@@ -31,26 +31,27 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     
     Route::get('/profile', [UserController::class, 'index']);
 
-    // Admin routes
-    Route::group(['middleware' => 'role:Admin'], function() {
-        Route::get('/users', [UserController::class, 'allUsers']);
+    // Route::get('/users', [UserController::class, 'allUsers']);
+
+    // Routes for creating users (Admin-only)
+    Route::group(['middleware' => 'permission:create-users'], function() {
+        Route::post('/create-user', [UserController::class, 'store']);
         Route::get('/roles', [RoleController::class, 'index']);
-        Route::post('/create-user', [AdminController::class, 'store']);
-        Route::put('/update-user/{id}', [AdminController::class, 'update']);
-        Route::delete('/delete-user/{id}', [AdminController::class, 'destroy']);
-        Route::post('/assign-role/{userId}', [AdminController::class, 'assignRole']);
     });
 
-    // Manager routes
-    Route::group(['middleware' => 'role:Manager'], function() {
+    // Routes for editing users (Admin and Manager)
+    Route::group(['middleware' => 'permission:edit-users'], function() {
+        Route::put('/update-user/{id}', [AdminController::class, 'updateUser']);
+    });
+
+    // Routes for deleting users (Admin-only)
+    Route::group(['middleware' => 'permission:delete-users'], function() {
+        Route::delete('/delete-user/{id}', [AdminController::class, 'deleteUser']);
+    });
+
+    // Routes for viewing users (Admin, Manager, and Users)
+    Route::group(['middleware' => 'permission:view-users'], function() {
         Route::get('/users', [UserController::class, 'allUsers']);
-        Route::put('/update-user/{id}', [ManagerController::class, 'updateUser']);
-        Route::get('/view-users', [ManagerController::class, 'viewUsers']);
     });
-
-    // User routes
-    // Route::group(['middleware' => 'role:User'], function() {
-    //     Route::get('/profile', [UserController::class, 'profile']);
-    // });
 
 });
