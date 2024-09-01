@@ -5,6 +5,8 @@ function Sidebar({
   sidebarOpen,
   setSidebarOpen,
   variant = 'default',
+  role,
+  permissions,
 }) {
   const location = useLocation();
   const { pathname } = location;
@@ -94,6 +96,8 @@ function Sidebar({
               </span>
               <span className="lg:hidden lg:sidebar-expanded:block 2xl:block">Pages</span>
             </h3>
+            
+            {role.some(r => r.name === 'Admin' || r.name === 'Manager') && (
             <ul className="mt-3 pl-0">
               {/* Dashboard */}
               <li className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 ${pathname === "/" ? 'bg-violet-500/[0.12] dark:bg-violet-500/[0.24]' : ''}`}>
@@ -138,6 +142,7 @@ function Sidebar({
                 </NavLink>
               </li>
             </ul>
+            )}
           </div>
         </div>
       </div>

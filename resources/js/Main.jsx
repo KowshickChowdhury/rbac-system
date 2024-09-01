@@ -13,6 +13,7 @@ import Auth from './layout/Auth';
 import Users from './pages/Users';
 import RolePermissions from './pages/RolePermissions';
 import UserForm from './components/Users/UserForm';
+import RolePermissionForm from './components/RolePermission/RolePermissionForm';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,7 +22,10 @@ const router = createBrowserRouter(
         <Route index element={<Dashboard />} />
         <Route path='users' element={<Users />} />
         <Route path='add-user' element={<UserForm />} />
+        <Route path='edit-user/:id' element={<UserForm />} />
         <Route path='role-permissions' element={<RolePermissions />} />
+        <Route path='add-role-permissions' element={<RolePermissionForm />} />
+        <Route path='edit-role-permissions/:id' element={<RolePermissionForm />} />
       </Route>
       <Route path="login" element={<Login />} />
       <Route path="signup" element={<Signup />} />

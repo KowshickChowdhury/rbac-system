@@ -1,0 +1,60 @@
+/* Loading.css */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 75vh;
+    // background-color: #f0f0f0;
+}
+
+// .loading-spinner {
+//     border: 5px solid #f3f3f3;
+//     border-top: 5px solid #3498db;
+//     border-radius: 50%;
+//     width: 3rem;
+//     height: 3rem;
+//     animation: spin 2s linear infinite;
+// }
+
+.loading-name {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: inline-block;
+    border-top: 3px solid #000000;
+    border-right: 3px solid transparent;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+
+  /* HTML: <div class="loader"></div> */
+.dot-loading {
+    width: 60px;
+    aspect-ratio: 4;
+    background: radial-gradient(circle closest-side,#000 90%,#0000) 0/calc(100%/3) 100% space;
+    clip-path: inset(0 100% 0 0);
+    animation: l1 1s steps(4) infinite;
+  }
+  @keyframes l1 {to{clip-path: inset(0 -34% 0 0)}}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 
+
+// @keyframes spin {
+//     0% { transform: rotate(0deg); }
+//     100% { transform: rotate(360deg); }
+// }

@@ -16,7 +16,7 @@ class RolePermissionSeeder extends Seeder
     {
         $adminRole = Role::create(['name' => 'Admin']);
         $managerRole = Role::create(['name' => 'Manager']);
-        $userRole = Role::create(['name' => 'User']);
+        Role::create(['name' => 'User']);
 
         $permissions = ['create-users', 'edit-users', 'delete-users', 'view-users'];
 
@@ -26,6 +26,5 @@ class RolePermissionSeeder extends Seeder
 
         $adminRole->permissions()->attach(Permission::all());
         $managerRole->permissions()->attach(Permission::where('name', '!=', 'delete-users')->get());
-        $userRole->permissions()->attach(Permission::where('name', 'view-users')->get());
     }
 }

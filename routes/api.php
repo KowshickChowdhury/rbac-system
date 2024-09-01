@@ -3,7 +3,9 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,25 +35,28 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
     // Route::get('/users', [UserController::class, 'allUsers']);
 
-    // Routes for creating users (Admin-only)
     Route::group(['middleware' => 'permission:create-users'], function() {
         Route::post('/create-user', [UserController::class, 'store']);
+        Route::post('/create-role-permissions', [RolePermissionController::class, 'store']);
         Route::get('/roles', [RoleController::class, 'index']);
+        Route::get('/permissions', [PermissionController::class, 'index']);
     });
 
-    // Routes for editing users (Admin and Manager)
     Route::group(['middleware' => 'permission:edit-users'], function() {
-        Route::put('/update-user/{id}', [AdminController::class, 'updateUser']);
+        Route::get('/edit-user/{id}', [UserController::class, 'edit']);
+        Route::post('/update-user/{id}', [UserController::class, 'update']);
+        Route::get('/edit-role-permissions/{id}', [RolePermissionController::class, 'edit']);
+        Route::post('/update-role-permissions/{id}', [RolePermissionController::class, 'update']);
     });
 
-    // Routes for deleting users (Admin-only)
     Route::group(['middleware' => 'permission:delete-users'], function() {
-        Route::delete('/delete-user/{id}', [AdminController::class, 'deleteUser']);
+        Route::delete('/delete-user/{id}', [UserController::class, 'destroy']);
+        Route::delete('/delete-role-permissions/{id}', [RolePermissionController::class, 'destroy']);
     });
 
-    // Routes for viewing users (Admin, Manager, and Users)
     Route::group(['middleware' => 'permission:view-users'], function() {
         Route::get('/users', [UserController::class, 'allUsers']);
+        Route::get('/role-permissions', [RolePermissionController::class, 'index']);
     });
 
 });

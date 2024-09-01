@@ -1,7 +1,7 @@
-const UserApis = {};
+const RolePermissionsApis = {};
 
-UserApis.index = async() => {
-    const res = await axios.get("/api/users")
+RolePermissionsApis.index = async() => {
+    const res = await axios.get("/api/role-permissions")
         .then(response => {
             return response.data;
         })
@@ -11,8 +11,19 @@ UserApis.index = async() => {
     return res;
 };
 
-UserApis.store = async(data) => {
-    let url = `/api/create-user`;
+RolePermissionsApis.getRolePermissions = async() => {
+    const res = await axios.get("/api/profile")
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => {
+            return error;
+        });
+    return res;
+};
+
+RolePermissionsApis.store = async(data) => {
+    let url = `/api/create-role-permissions`;
     try {
         const response = await axios.post(url, data);
         return response.data;
@@ -38,8 +49,8 @@ UserApis.store = async(data) => {
     }
 }
 
-UserApis.edit = async($id) => {
-    const res = await axios.get(`/api/edit-user/${$id}`)
+RolePermissionsApis.edit = async($id) => {
+    const res = await axios.get(`/api/edit-role-permissions/${$id}`)
         .then(response => {
             return response.data;
         })
@@ -49,8 +60,8 @@ UserApis.edit = async($id) => {
     return res;
 };
 
-UserApis.update = async(data, id) => {
-    let url = `/api/update-user/${id}`;
+RolePermissionsApis.update = async(data, id) => {
+    let url = `/api/update-role-permissions/${id}`;
     try {
         const response = await axios.post(url, data);
         return response.data;
@@ -76,8 +87,8 @@ UserApis.update = async(data, id) => {
     }
 }
 
-UserApis.delete = async (id) => {
-    const url = `/api/delete-user/${id}`;
+RolePermissionsApis.delete = async (id) => {
+    const url = `/api/delete-role-permissions/${id}`;
     try {
         const response = await axios.delete(url);
         return response.data;
@@ -87,4 +98,4 @@ UserApis.delete = async (id) => {
     }
 };
 
-export default UserApis;
+export default RolePermissionsApis;
