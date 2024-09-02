@@ -9,7 +9,7 @@
 
 # Role-Based Access Control System
 
-Welcome to the Inventory Management System! This project is built using Laravel for the backend and React for the frontend.
+Welcome to the Role-Based Access Control System! This project is built using Laravel for the backend and React for the frontend.
 
 ## Table of Contents
 - [Getting Started](#getting-started)
@@ -41,50 +41,98 @@ Before you begin, ensure you have the following installed on your machine:
 
 2. Navigate to the project directory:
 
+    ```bash
     cd rbac-system
 
 3. Install backend dependencies:
 
+    ```bash
     composer install
 
 4. Set up Laravel environment:
 
+    ```bash
     Copy the .env.example file to .env:
 
     cp .env.example .env
 
 5. Generate the application key:
 
+    ```bash
     php artisan key:generate
 
     Configure your database in the .env file.
 
 6. Migrate the database:
 
+    ```bash
     php artisan migrate
 
-7. Install frontend dependencies:
+7. Run Seeders for seeding Role & Permissions:
 
+    ```bash
+    php artisan db:seed
+
+8. Install frontend dependencies:
+
+    ```bash
     npm install
-    # or
-    yarn install
 
-Usage
+## Usage
 To run the project, follow these steps:
 
 1. Start the Laravel backend server:
 
+    ```bash
     php artisan serve
 
 2. Start the React frontend development server:
 
+    ```bash
     npm start
-    # or
-    yarn start
 
 3. Access the application in your browser:
 
-    http://localhost:3000
+    ```bash
+    http://127.0.0.1:8000
+
+
+## RBAC System Overview
+
+1. Roles
+Roles define the level of access a user has within the system. The default roles are:
+
+Admin: Has full control over user management, including creating, updating, deleting users, and assigning roles.
+Manager: Can manage users but does not have access to certain admin features (e.g., deleting users).
+User: Can only access their own information.
+
+2. Permissions
+Permissions are granular actions that can be assigned to roles. The default permissions are:
+
+create-users: Ability to create new users.
+edit-users: Ability to edit existing users.
+delete-users: Ability to delete users.
+view-users: Ability to view user information.
+Role-Permission Management
+Admin Role: Assigned all permissions (create-users, edit-users, delete-users, view-users).
+Manager Role: Assigned edit-users and view-users permissions.
+User Role: Assigned only the view-users permission.
+The relationship between roles and permissions is managed through the roles, permissions, and role_permission tables. The role_permission table associates specific permissions with roles, allowing for flexible permission management.
+
+3. Important Architectural Decisions
+Laravel Sanctum for Authentication: Laravel Sanctum is used for API token-based authentication, which provides simplicity and security.
+Separation of Concerns: The project is split into a clear separation between frontend (React) and backend (Laravel) codebases to promote maintainability.
+Middleware for Permission Checking: The CheckPermission middleware was implemented to enforce permission checks at the route level, ensuring that only authorized users can access specific routes.
+
+## Frontend Overview
+1. Admin Dashboard
+View Users: Admins can view all users and their roles.
+Manage Users: Admins can create and update users.
+Assign Roles: Admins can assign roles by add and editing user. Also permissions to users from Role Permissions page.
+
+1. User Dashboard
+Profile View: Regular users can view their own profile information.
+Role-Based UI: The UI dynamically adapts based on the user's role, showing or hiding features accordingly.
 
 ## About Laravel
 

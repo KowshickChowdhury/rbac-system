@@ -3,14 +3,18 @@ import UserApis from '../apis/UserApis';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { Link, NavLink } from 'react-router-dom';
 import Loading from '../components/Loading/Loading';
+import RolePermissionsApis from '../apis/RolePermissionApis';
 
 function Users() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [role, setRole] = useState([]);
+  const [permissions, setPermissions] = useState([]);
 
   useEffect(() => {
     fetchData();
+    getRolePermissions();
   }, []);
   
   const fetchData = async () => {
@@ -23,6 +27,17 @@ function Users() {
     setLoading(false);
   };
 
+  const getRolePermissions = async () => {
+    const res = await RolePermissionsApis.getRolePermissions();
+    // console.log('getRolePermissions', res);
+    if (res.success) {
+      setRole(res.data.roles);
+      setPermissions(res.data?.roles?.flatMap(role => role?.permissions));
+    }
+  };
+  console.log('role', role)
+  console.log('permissions', permissions)
+  
   const handleDeleteUser = async (userId) => {
     const shouldDelete = window.confirm("Are you sure you want to delete this attendance?");
 
@@ -45,11 +60,13 @@ function Users() {
     <div>
         <div className="flex justify-between items-center mb-4 sm:mb-0">
             <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Users</h1>
+            {permissions.some(permission => permission.name === 'create-users') && (
             <NavLink to="/add-user">
               <button className="bg-gray-900 text-gray-100 hover:bg-blue-500 p-2 rounded">
                 <span className="">Add User</span>
               </button>
             </NavLink>
+            )}
         </div>
         {loading ? 
           <Loading />
@@ -97,15 +114,19 @@ function Users() {
                         </td>
                         <td className="p-2">
                           <div className="text-center flex items-center">
-                            <Link to={`/edit-user/${user.id}`}>
-                              <FaEdit
-                              className='mr-4 cursor-pointer'
+                            {permissions.some(permission => permission.name === 'edit-users') && (
+                              <Link to={`/edit-user/${user.id}`}>
+                                <FaEdit
+                                className='mr-4 cursor-pointer'
+                                />
+                              </Link>
+                            )}
+                            {permissions.some(permission => permission.name === 'delete-users') && (
+                              <FaTrashAlt
+                                  className='cursor-pointer'
+                                  onClick={() => handleDeleteUser(user.id)}
                               />
-                            </Link>
-                            <FaTrashAlt
-                                className='cursor-pointer'
-                                onClick={() => handleDeleteUser(user.id)}
-                            />
+                            )}
                           </div>
                         </td>
                       </tr>

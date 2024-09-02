@@ -3,6 +3,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import RolePermissionsApis from "../apis/RolePermissionApis";
+import ProfileApis from "../apis/ProfileApis";
 
 const Auth = () => {
     const token = localStorage.getItem("token");
@@ -15,8 +16,8 @@ const Auth = () => {
 
     useEffect(() => {
       fetchData();
+      getProfile();
     }, []);
-    
   
     const fetchData = async () => {
       const res = await RolePermissionsApis.getRolePermissions();
@@ -28,21 +29,27 @@ const Auth = () => {
       }
     };
 
-    console.log('role', role)
-    console.log('permissions', permissions)
+    const getProfile = async () => {
+      const res = await ProfileApis.index();
+      console.log('res', res);
+      if (res.success) {
+        setProfile(res.data);
+      }
+    };
+
 
   return token ?
   <>
     <div className="flex h-screen overflow-hidden">
 
     {/* Sidebar */}
-    <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} role={role} permissions={permissions} />
+    <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} role={role} permissions={permissions} profile={profile}  />
 
     {/* Content area */}
     <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
 
       {/*  Site header */}
-      <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} profile={profile} />
 
       <main className="grow">
         <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">

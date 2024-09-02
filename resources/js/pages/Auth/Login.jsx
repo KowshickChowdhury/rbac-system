@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import AuthApis from '../apis/AuthApis';
+import AuthApis from '../../apis/AuthApis';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -51,7 +51,11 @@ function Login() {
                 localStorage.token = res.data.data.token;
                 localStorage.role = res.data.data.role[0];
                 // window.location.reload();
-                navigate('/')
+                if (res.data.data.role[0] === 'Admin' || res.data.data.role[0] === 'Manager') {
+                    navigate('/')
+                } else {
+                    navigate('/profile')
+                }
             } else if (res.errors) {
                 const errorMessages = Object.values(res.errors).join('. ');
                 setMessage(errorMessages);

@@ -6,20 +6,22 @@ import { Route,
   createRoutesFromElements,
   RouterProvider
 } from 'react-router-dom';
-import Login from './components/Login';
-import Signup from './components/Signup';
+import Login from './pages/Auth/Login';
+import Signup from './pages/Auth/Signup';
 import Dashboard from './pages/Dashboard';
 import Auth from './layout/Auth';
 import Users from './pages/Users';
 import RolePermissions from './pages/RolePermissions';
 import UserForm from './components/Users/UserForm';
 import RolePermissionForm from './components/RolePermission/RolePermissionForm';
+import Profile from './pages/Profile';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">        
       <Route element={<Auth />}>
         <Route index element={<Dashboard />} />
+        <Route path='profile' element={<Profile />} />
         <Route path='users' element={<Users />} />
         <Route path='add-user' element={<UserForm />} />
         <Route path='edit-user/:id' element={<UserForm />} />

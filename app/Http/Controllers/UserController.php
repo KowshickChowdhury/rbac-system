@@ -22,7 +22,18 @@ class UserController extends Controller
 
     public function allUsers()
     {
-        $users = User::with('roles')->get();
+        // $users = User::with('roles')->get();
+
+        $authUser = Auth::user();
+        
+        if ($authUser->roles->contains('name', 'Admin')) {
+            $users = User::with('roles')->get();
+        } else {
+            $users = User::whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'Admin');
+            })->with('roles')->get();
+        }
+        
         return $this->sendResponse($users);
     }
 

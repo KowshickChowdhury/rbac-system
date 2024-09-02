@@ -3,16 +3,30 @@ import RolePermissionsApis from '../apis/RolePermissionApis';
 import Loading from '../components/Loading/Loading';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { Link, NavLink } from 'react-router-dom';
+import ProfileApis from '../apis/ProfileApis';
 
 function RolePermissions() {
   const [rolePermissions, setrRolePermissions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [role, setRole] = useState([]);
 
   useEffect(() => {
     fetchData();
+    getAuthRolePer();
   }, []);
   
+
+  const getAuthRolePer = async () => {
+    setLoading(true);
+    const res = await ProfileApis.index();
+    console.log('res', res);
+    if (res.success) {
+      setRole(res.data.roles);
+    }
+    setLoading(false);
+  };
+
   const fetchData = async () => {
     setLoading(true);
     const res = await RolePermissionsApis.index();
@@ -43,6 +57,12 @@ function RolePermissions() {
   
   return (
     <div>
+    {loading ? 
+      <Loading />
+      :
+      <>
+      {role.some(r => r.name === 'Admin') && (
+        <>
         <div className="flex justify-between items-center mb-4 sm:mb-0">
             <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Role & Permissions</h1>
             <NavLink to="/add-role-permissions">
@@ -51,9 +71,6 @@ function RolePermissions() {
               </button>
             </NavLink>
         </div>
-        {loading ? 
-          <Loading />
-          :
           <div className=" bg-white dark:bg-gray-800 shadow-sm rounded-xl">
             <div className="p-3">
               {message && (
@@ -113,7 +130,10 @@ function RolePermissions() {
               </div>
             </div>
           </div>
-        }
+      </>
+      )}
+      </>
+    }
     </div>
   )
 }
