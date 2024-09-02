@@ -68,7 +68,7 @@ Before you begin, ensure you have the following installed on your machine:
     ```bash
     php artisan migrate
 
-7. Run Seeders for seeding Role & Permissions:
+7. Run Seeders for seeding Role-Permissions and Admin login infos:
 
     ```bash
     php artisan db:seed
